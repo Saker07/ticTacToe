@@ -7,7 +7,7 @@ function playerFactory(choice){
     return {getSign, addWin}
 }
 function gameboardFactory(){
-    let board = [["", "", ""], ["", "", ""], ["", "", ""]];
+    let board = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"]];
     const reset = ()=>{
         board = [["", "", ""], ["", "", ""], ["", "", ""]];
     };
@@ -47,6 +47,18 @@ function gameboardFactory(){
         board[x][y] = board[x][y] == "" ? player.getSign() : board[x][y];
     };
     const display = ()=>{
+        let oldCont = document.querySelector(".boardContainer");
+        let newCont = document.createElement("div");
+        let elem;
+        for (let row of board){
+            for(let cell of row){
+                elem = document.createElement("div");
+                elem.classList.add("cell");
+                elem.textContent = cell;
+                newCont.appendChild(elem);
+            }
+        }
+        oldCont.innerHTML = newCont.innerHTML;
     };
     return {reset, check, mark, display}
 }

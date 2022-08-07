@@ -5,19 +5,49 @@
 body {
     height: 100vh;
     width: 100vw;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.container {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10rem;
+    height: 50vh;
+    width: 100%
 }
 
 .boardContainer {
     display: grid;
     grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
     gap: 0.2rem;
+    height: 30rem;
+    width: 30rem;
+    background-color: black;
 }
 .boardContainer .cell {
-    height: 100px;
-    width: 100px;
-    background-color: coral;
+    background-color: white;
+}
+
+.playerContainer {
+    border: 0.2rem;
+    border-style: solid;
+    border-radius: 1rem;
+    flex: 1;
+    max-width: 20rem;
+    height: 30rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.playerName {
+    font-size: 3rem;
+}
+.playerSign {
+    font-size: 4rem;
+}
+.winCount {
+    font-size: 2rem;
 }
