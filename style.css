@@ -26,8 +26,23 @@ body {
     width: 30rem;
     background-color: black;
 }
+
 .boardContainer .cell {
     background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    font-size: 3rem;
+    font-weight: bolder;
+    user-select: none;
+    transition: all 0.2s ease-in-out;
+}
+.cell:hover {
+    background-color: blanchedalmond;
+}
+.cell:active {
+    transform: scale(0.9);
 }
 
 .playerContainer {
