@@ -57,11 +57,12 @@ function gameboardFactory(){
         return f;
     };
     const mark = (x, y)=>{
-        board[x][y] = board[x][y] == "" ? currentPlayer.getSign() : board[x][y];
-        display();
-        check();
-
-        currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+        if(board[x][y] == ""){
+            board[x][y] = currentPlayer.getSign();
+            display();
+            check();
+            currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+        }
     };
     const display = ()=>{
         let oldCont = document.querySelector(".boardContainer");
@@ -99,6 +100,7 @@ currentPlayer = playerOne;
 
 let gameboard;
 gameboard = gameboardFactory();
+gameboard.reset();
 
 
 
