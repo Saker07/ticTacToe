@@ -52,6 +52,7 @@ function gameboardFactory(){
             alert(`Win!`);
             gameboard.reset();
         }else if(f==2){     //draw
+            alert("Draw!");
             gameboard.reset();
         }
         return f;
