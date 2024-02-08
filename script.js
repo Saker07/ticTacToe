@@ -29,7 +29,10 @@ function gameboardFactory() {
     return;
   };
 
-  const check = () => {
+  const checkGameState = () => {
+    if (gameEnd != 0) {
+      return gameEnd;
+    }
     let f = 2; //default state "draw"
     for (let row of board) {
       //if even 1 cell is empty, it's no longer a draw, so set to 0
@@ -69,8 +72,7 @@ function gameboardFactory() {
   const mark = (x, y) => {
     if (board[x][y] == "" && gameEnd === 0) {
       board[x][y] = currentPlayer.getSign();
-      check();
-      currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+      checkGameState();
     }
   };
   const display = () => {
@@ -100,17 +102,25 @@ function gameboardFactory() {
   const getBoard = () => {
     return board;
   };
-  return { reset, mark, display, getBoard };
+  return { reset, mark, /*display,*/ getBoard, checkGameState };
 }
-function gameController(gameboard) {
+function gameController() {
+  let playerOne, playerTwo, currentPlayer;
+  playerTwo = playerFactory("O");
+  playerOne = playerFactory("X");
+  currentPlayer = playerOne;
+
+  let gameboard = gameboardFactory();
   gameboard.reset();
+
+  const switchPlayer = () => {
+    currentPlayer = currentPlayer == playerOne ? playerTwo : playerOne;
+  };
+
+  const playTurn = () => {};
+  const resetGame = () => {};
 }
 function screenController() {}
-
-let playerOne, playerTwo, currentPlayer;
-playerTwo = playerFactory("O");
-playerOne = playerFactory("X");
-currentPlayer = playerOne;
 
 let gameboard;
 gameboard = gameboardFactory();
