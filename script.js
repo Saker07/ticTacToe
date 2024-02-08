@@ -18,6 +18,7 @@ function playerFactory(choice) {
 function gameboardFactory() {
   let board = [];
   let gameEnd = 0; //0 game in progress, 1 game won, 2 game draw
+
   const reset = () => {
     board = [
       ["", "", ""],
@@ -27,57 +28,44 @@ function gameboardFactory() {
     gameEnd = 0;
     return;
   };
+
   const check = () => {
     let f = 2; //default state "draw"
-    (function checkNotADraw() {
+    for (let row of board) {
       //if even 1 cell is empty, it's no longer a draw, so set to 0
-      for (let row of board) {
-        for (let cell of row) {
-          if (cell === "") {
-            f = 0;
-          }
+      for (let cell of row) {
+        if (cell === "") {
+          f = 0;
         }
       }
-    })();
-    (function checkWin() {
-      for (let i = 0; i < board.length; i++) {
-        //if someone won set to 1
-        if (
-          [board[i][0], board[i][1], board[i][2]].every(
-            (value, i, arr) => value === arr[i][0]
-          )
-        ) {
-          f = 1;
-        }
-        if (
-          [board[0][i], board[1][i], board[2][i]].every(
-            (value, i, arr) => value === arr[0][i]
-          )
-        ) {
-          f = 1;
-        }
-        if (
-          [board[0][2], board[1][1], board[2][0]].every(
-            (value, i, arr) => value === arr[0][2]
-          ) ||
-          [board[0][0], board[1][1], board[2][2]].every(
-            (value, i, arr) => value === arr[0][0]
-          )
-        ) {
-          f = 1;
-        }
-      }
-    })();
-    if (f == 1) {
-      //win
-      currentPlayer.addWin();
-      gameEnd = 1;
-    } else if (f == 2) {
-      //draw
-      gameEnd = 2;
     }
+    for (let i = 0; i < board.length; i++) {
+      //check for a win
+      if (
+        [board[i][0], board[i][1], board[i][2]].every(
+          (value, i, arr) => value === arr[i][0]
+        ) ||
+        [board[0][i], board[1][i], board[2][i]].every(
+          (value, i, arr) => value === arr[0][i]
+        )
+      ) {
+        f = 1;
+      }
+      if (
+        [board[0][2], board[1][1], board[2][0]].every(
+          (value, i, arr) => value === arr[0][2]
+        ) ||
+        [board[0][0], board[1][1], board[2][2]].every(
+          (value, i, arr) => value === arr[0][0]
+        )
+      ) {
+        f = 1;
+      }
+    }
+    gameEnd = f;
     return f;
   };
+
   const mark = (x, y) => {
     if (board[x][y] == "" && gameEnd === 0) {
       board[x][y] = currentPlayer.getSign();
