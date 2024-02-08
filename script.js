@@ -130,7 +130,11 @@ function gameController() {
     switchPlayer();
     return gameState;
   };
-  const resetGame = () => {};
+  const resetGame = (playerOneSign, playerTwoSign) => {
+    playerOne = playerFactory(playerOneSign);
+    playerTwo = playerFactory(playerTwoSign);
+    gameboard.reset();
+  };
 }
 function screenController() {}
 
