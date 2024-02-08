@@ -69,9 +69,9 @@ function gameboardFactory() {
     return f;
   };
 
-  const mark = (x, y) => {
+  const mark = (x, y, sign) => {
     if (board[x][y] == "" && gameEnd === 0) {
-      board[x][y] = currentPlayer.getSign();
+      board[x][y] = sign;
       checkGameState();
     }
   };
@@ -117,7 +117,19 @@ function gameController() {
     currentPlayer = currentPlayer == playerOne ? playerTwo : playerOne;
   };
 
-  const playTurn = () => {};
+  const playTurn = (x, y) => {
+    let gameState = 0;
+    gameboard.mark(x, y, currentPlayer.getSign);
+    gameState = gameboard.checkGameState();
+    if (gameState == 1) {
+      currentPlayer.addWin();
+      return gameState;
+    } else if (gameState == 2) {
+      return gameState;
+    }
+    switchPlayer();
+    return gameState;
+  };
   const resetGame = () => {};
 }
 function screenController() {}
