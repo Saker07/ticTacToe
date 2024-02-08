@@ -3,8 +3,7 @@ function playerFactory(choice) {
   let winDisplay;
   wins = 0;
   sign = choice;
-  winDisplay = document.querySelector(`.${sign} .winCount`);
-  console.log(winDisplay);
+  //winDisplay = document.querySelector(`.${sign} .winCount`); ////---------------------------------------------------------------------------------screen controller
   const getSign = () => {
     return sign;
   };
@@ -15,24 +14,22 @@ function playerFactory(choice) {
   };
   return { getSign, addWin };
 }
+
 function gameboardFactory() {
-  let board = [
-    ["1", "2", "3"],
-    ["4", "5", "6"],
-    ["7", "8", "9"],
-  ];
+  let board = [];
+  let gameEnd = 0; //0 game in progress, 1 game won, 2 game draw
   const reset = () => {
     board = [
       ["", "", ""],
       ["", "", ""],
       ["", "", ""],
     ];
-    display();
+    gameEnd = 0;
     return;
   };
   const check = () => {
     let f = 2; //default state "draw"
-    (function checkDraw() {
+    (function checkNotADraw() {
       //if even 1 cell is empty, it's no longer a draw, so set to 0
       for (let row of board) {
         for (let cell of row) {
@@ -47,24 +44,24 @@ function gameboardFactory() {
         //if someone won set to 1
         if (
           [board[i][0], board[i][1], board[i][2]].every(
-            (item) => item === currentPlayer.getSign()
+            (value, i, arr) => value === arr[i][0]
           )
         ) {
           f = 1;
         }
         if (
           [board[0][i], board[1][i], board[2][i]].every(
-            (item) => item === currentPlayer.getSign()
+            (value, i, arr) => value === arr[0][i]
           )
         ) {
           f = 1;
         }
         if (
           [board[0][2], board[1][1], board[2][0]].every(
-            (item) => item === currentPlayer.getSign()
+            (value, i, arr) => value === arr[0][2]
           ) ||
           [board[0][0], board[1][1], board[2][2]].every(
-            (item) => item === currentPlayer.getSign()
+            (value, i, arr) => value === arr[0][0]
           )
         ) {
           f = 1;
@@ -74,19 +71,16 @@ function gameboardFactory() {
     if (f == 1) {
       //win
       currentPlayer.addWin();
-      alert(`Win!`);
-      gameboard.reset();
+      gameEnd = 1;
     } else if (f == 2) {
       //draw
-      alert("Draw!");
-      gameboard.reset();
+      gameEnd = 2;
     }
     return f;
   };
   const mark = (x, y) => {
-    if (board[x][y] == "") {
+    if (board[x][y] == "" && gameEnd === 0) {
       board[x][y] = currentPlayer.getSign();
-      display();
       check();
       currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
     }
@@ -116,11 +110,14 @@ function gameboardFactory() {
     }
   };
   const getBoard = () => {
-    //for testing purposes.
     return board;
   };
-  return { reset, check, mark, display };
+  return { reset, mark, display, getBoard };
 }
+function gameController(gameboard) {
+  gameboard.reset();
+}
+function screenController() {}
 
 let playerOne, playerTwo, currentPlayer;
 playerTwo = playerFactory("O");
@@ -130,5 +127,3 @@ currentPlayer = playerOne;
 let gameboard;
 gameboard = gameboardFactory();
 gameboard.reset();
-
-console.log("1");
