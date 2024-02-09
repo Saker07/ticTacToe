@@ -9,7 +9,7 @@ function playerFactory(choice) {
   };
   const addWin = () => {
     wins++;
-    winDisplay.textContent = wins;
+    //  winDisplay.textContent = wins;
     return wins;
   };
   return { getSign, addWin };
@@ -119,14 +119,12 @@ function gameController() {
     gameState = gameboard.checkGameState();
     if (gameState == 1) {
       currentPlayer.addWin();
-      return gameState;
-    } else if (gameState == 2) {
-      return gameState;
+    } else {
+      switchPlayer();
     }
-    switchPlayer();
     return {
       board: gameboard.getBoard(),
-      gameState: gameboard.checkGameState(),
+      gameState: gameState,
     };
   }
 
