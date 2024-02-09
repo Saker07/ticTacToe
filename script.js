@@ -12,7 +12,10 @@ function playerFactory(choice) {
     //  winDisplay.textContent = wins;
     return wins;
   };
-  return { getSign, addWin };
+  const getWins = () => {
+    return wins;
+  };
+  return { getSign, addWin, getWins };
 }
 
 function gameboardFactory() {
@@ -78,30 +81,7 @@ function gameboardFactory() {
       return null;
     }
   };
-  const display = () => {
-    let oldCont = document.querySelector(".boardContainer");
-    let newCont = document.createElement("div");
-    let elem;
-    for (let row of board) {
-      for (let cell of row) {
-        elem = document.createElement("div");
-        elem.classList.add("cell");
-        elem.textContent = cell;
-        newCont.appendChild(elem);
-      }
-    }
-    oldCont.innerHTML = newCont.innerHTML;
-    let cells;
-    cells = document.querySelectorAll(".cell");
-    for (let row in board) {
-      for (let cell in board) {
-        let currIndex = +row * 3 + +cell;
-        cells[currIndex].addEventListener("click", (e) => {
-          mark(+row, +cell);
-        });
-      }
-    }
-  };
+
   const getBoard = () => {
     return board;
   };
@@ -141,13 +121,66 @@ function gameController() {
       gameState: gameboard.checkGameState(),
     };
   }
+  function getScore() {
+    return {
+      playerOne: playerOne.getWins(),
+      playerTwo: playerTwo.getWins(),
+    };
+  }
 
   const getCurrentPlayer = () => {
     return currentPlayer;
   };
-  return { getCurrentPlayer, resetGame, playTurn };
+  function getGame() {
+    return gameboard.checkGameState();
+  }
+  return { getCurrentPlayer, resetGame, playTurn, getScore, getGame };
 }
-function screenController() {}
+function screenController() {
+  //to add handler to input player signs, and function to show game wins, and function to show round/match end and result, also match reset.
+  let game = gameController();
+
+  const displayT = () => {
+    let boardContainer = document.querySelector(".boardContainer");
+    boardContainer.innerHTML = "";
+    for (let row of board) {
+      for (let cell of board) {
+        let elem = document.createElement("button");
+        elem.classList.add("cell");
+        boardContainer.appendChild(elem);
+        elem.addEventListener("click");
+      }
+    }
+  };
+  const clickHandler = () => {
+    //playturn()
+    displayT();
+  };
+  const display = () => {
+    let oldCont = document.querySelector(".boardContainer");
+    let newCont = document.createElement("div");
+    let elem;
+    for (let row of board) {
+      for (let cell of row) {
+        elem = document.createElement("div");
+        elem.classList.add("cell");
+        elem.textContent = cell;
+        newCont.appendChild(elem);
+      }
+    }
+    oldCont.innerHTML = newCont.innerHTML;
+    let cells;
+    cells = document.querySelectorAll(".cell");
+    for (let row in board) {
+      for (let cell in board) {
+        let currIndex = +row * 3 + +cell;
+        cells[currIndex].addEventListener("click", (e) => {
+          mark(+row, +cell);
+        });
+      }
+    }
+  };
+}
 
 let gameboard;
 gameboard = gameboardFactory();
