@@ -46,20 +46,20 @@ function gameboardFactory() {
       //check for a win
       if (
         [board[i][0], board[i][1], board[i][2]].every(
-          (value, i, arr) => value === arr[i][0]
+          (value, index, arr) => value === arr[i][0]
         ) ||
         [board[0][i], board[1][i], board[2][i]].every(
-          (value, i, arr) => value === arr[0][i]
+          (value, index, arr) => value === arr[0][i]
         )
       ) {
         f = 1;
       }
       if (
         [board[0][2], board[1][1], board[2][0]].every(
-          (value, i, arr) => value === arr[0][2]
+          (value, index, arr) => value === arr[0][2]
         ) ||
         [board[0][0], board[1][1], board[2][2]].every(
-          (value, i, arr) => value === arr[0][0]
+          (value, index, arr) => value === arr[0][0]
         )
       ) {
         f = 1;
@@ -73,6 +73,9 @@ function gameboardFactory() {
     if (board[x][y] == "" && gameEnd === 0) {
       board[x][y] = sign;
       checkGameState();
+      return 1;
+    } else {
+      return null;
     }
   };
   const display = () => {
@@ -115,11 +118,11 @@ function gameController() {
 
   function playTurn(x, y) {
     let gameState = 0;
-    gameboard.mark(x, y, currentPlayer.getSign());
+    let marked = gameboard.mark(x, y, currentPlayer.getSign());
     gameState = gameboard.checkGameState();
     if (gameState == 1) {
       currentPlayer.addWin();
-    } else {
+    } else if (marked) {
       switchPlayer();
     }
     return {
