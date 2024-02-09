@@ -106,20 +106,16 @@ function gameboardFactory() {
 }
 function gameController() {
   let playerOne, playerTwo, currentPlayer;
-  playerTwo = playerFactory("O");
-  playerOne = playerFactory("X");
-  currentPlayer = playerOne;
-
   let gameboard = gameboardFactory();
-  gameboard.reset();
+  resetGame("X", "O");
 
-  const switchPlayer = () => {
+  function switchPlayer() {
     currentPlayer = currentPlayer == playerOne ? playerTwo : playerOne;
-  };
+  }
 
-  const playTurn = (x, y) => {
+  function playTurn(x, y) {
     let gameState = 0;
-    gameboard.mark(x, y, currentPlayer.getSign);
+    gameboard.mark(x, y, currentPlayer.getSign());
     gameState = gameboard.checkGameState();
     if (gameState == 1) {
       currentPlayer.addWin();
@@ -128,13 +124,27 @@ function gameController() {
       return gameState;
     }
     switchPlayer();
-    return gameState;
-  };
-  const resetGame = (playerOneSign, playerTwoSign) => {
+    return {
+      board: gameboard.getBoard(),
+      gameState: gameboard.checkGameState(),
+    };
+  }
+
+  function resetGame(playerOneSign, playerTwoSign) {
     playerOne = playerFactory(playerOneSign);
     playerTwo = playerFactory(playerTwoSign);
     gameboard.reset();
+    switchPlayer();
+    return {
+      board: gameboard.getBoard(),
+      gameState: gameboard.checkGameState(),
+    };
+  }
+
+  const getCurrentPlayer = () => {
+    return currentPlayer;
   };
+  return { getCurrentPlayer, resetGame, playTurn };
 }
 function screenController() {}
 
