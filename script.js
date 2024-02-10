@@ -163,30 +163,6 @@ function screenController() {
     game.playTurn(x, y);
     displayT();
   };
-  const display = () => {
-    let oldCont = document.querySelector(".boardContainer");
-    let newCont = document.createElement("div");
-    let elem;
-    for (let row of board) {
-      for (let cell of row) {
-        elem = document.createElement("div");
-        elem.classList.add("cell");
-        elem.textContent = cell;
-        newCont.appendChild(elem);
-      }
-    }
-    oldCont.innerHTML = newCont.innerHTML;
-    let cells;
-    cells = document.querySelectorAll(".cell");
-    for (let row in board) {
-      for (let cell in board) {
-        let currIndex = +row * 3 + +cell;
-        cells[currIndex].addEventListener("click", (e) => {
-          mark(+row, +cell);
-        });
-      }
-    }
-  };
   return { game, displayT };
 }
 
