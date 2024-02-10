@@ -131,10 +131,10 @@ function gameController() {
   const getCurrentPlayer = () => {
     return currentPlayer;
   };
-  function getGame() {
-    return gameboard.checkGameState();
-  }
-  return { getCurrentPlayer, resetGame, playTurn, getScore, getGame };
+  const getGameState = () => {
+    return { board: gameboard.getBoard(), gameState: gameboard.checkGameState };
+  };
+  return { getCurrentPlayer, resetGame, playTurn, getScore, getGameState };
 }
 function screenController() {
   //to add handler to input player signs, and function to show game wins, and function to show round/match end and result, also match reset.
@@ -142,15 +142,18 @@ function screenController() {
 
   const displayT = () => {
     let boardContainer = document.querySelector(".boardContainer");
+    let board = game.getGameState().board;
     boardContainer.innerHTML = "";
     for (let row of board) {
-      for (let cell of board) {
+      for (let cell of row) {
         let elem = document.createElement("button");
         elem.classList.add("cell");
+        elem.textContent = cell;
         boardContainer.appendChild(elem);
-        elem.addEventListener("click");
+        elem.addEventListener("click", clickHandler);
       }
     }
+    return board;
   };
   const clickHandler = () => {
     //playturn()
@@ -180,6 +183,7 @@ function screenController() {
       }
     }
   };
+  return { game, displayT };
 }
 
 let gameboard;
