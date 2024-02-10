@@ -47,22 +47,23 @@ function gameboardFactory() {
     }
     for (let i = 0; i < board.length; i++) {
       //check for a win
+
       if (
         [board[i][0], board[i][1], board[i][2]].every(
-          (value, index, arr) => value === arr[i][0]
+          (value, index, arr) => value === arr[0] && value != ""
         ) ||
         [board[0][i], board[1][i], board[2][i]].every(
-          (value, index, arr) => value === arr[0][i]
+          (value, index, arr) => value === arr[0] && value != ""
         )
       ) {
         f = 1;
       }
       if (
         [board[0][2], board[1][1], board[2][0]].every(
-          (value, index, arr) => value === arr[0][2]
+          (value, index, arr) => value === arr[0] && value != ""
         ) ||
         [board[0][0], board[1][1], board[2][2]].every(
-          (value, index, arr) => value === arr[0][0]
+          (value, index, arr) => value === arr[0] && value != ""
         )
       ) {
         f = 1;
