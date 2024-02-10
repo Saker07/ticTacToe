@@ -144,19 +144,22 @@ function screenController() {
     let boardContainer = document.querySelector(".boardContainer");
     let board = game.getGameState().board;
     boardContainer.innerHTML = "";
-    for (let row of board) {
-      for (let cell of row) {
+    for (let rowIndex = 0; rowIndex < board.length; rowIndex++) {
+      for (let colIndex = 0; colIndex < board[rowIndex].length; colIndex++) {
         let elem = document.createElement("button");
         elem.classList.add("cell");
-        elem.textContent = cell;
+        elem.textContent = board[rowIndex][colIndex];
         boardContainer.appendChild(elem);
-        elem.addEventListener("click", clickHandler);
+        elem.addEventListener("click", (e) => {
+          clickHandler(rowIndex, colIndex);
+        });
       }
     }
     return board;
   };
-  const clickHandler = () => {
+  const clickHandler = (x, y) => {
     //playturn()
+    game.playTurn(x, y);
     displayT();
   };
   const display = () => {
