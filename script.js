@@ -101,7 +101,7 @@ function gameController() {
     let gameState = 0;
     let marked = gameboard.mark(x, y, currentPlayer.getSign());
     gameState = gameboard.checkGameState();
-    if (gameState == 1) {
+    if (gameState == 1 && marked) {
       currentPlayer.addWin();
     } else if (marked) {
       switchPlayer();
