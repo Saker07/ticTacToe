@@ -89,7 +89,10 @@ function gameboardFactory() {
   return { reset, mark, /*display,*/ getBoard, checkGameState };
 }
 function gameController() {
-  let playerOne, playerTwo, currentPlayer;
+  let currentPlayer;
+  let playerOne = playerFactory("X");
+  let playerTwo = playerFactory("O");
+  currentPlayer = switchPlayer();
   let gameboard = gameboardFactory();
   resetGame("X", "O");
 
@@ -112,9 +115,7 @@ function gameController() {
     };
   }
 
-  function resetGame(playerOneSign, playerTwoSign) {
-    playerOne = playerFactory(playerOneSign);
-    playerTwo = playerFactory(playerTwoSign);
+  function resetGame() {
     gameboard.reset();
     switchPlayer();
     return {
@@ -129,9 +130,9 @@ function gameController() {
     };
   }
 
-  const getCurrentPlayer = () => {
+  function getCurrentPlayer() {
     return currentPlayer;
-  };
+  }
   const getGameState = () => {
     return { board: gameboard.getBoard(), gameState: gameboard.checkGameState };
   };
@@ -152,14 +153,13 @@ function screenController() {
         elem.textContent = board[rowIndex][colIndex];
         boardContainer.appendChild(elem);
         elem.addEventListener("click", (e) => {
-          clickHandler(rowIndex, colIndex);
+          cellClickHandler(rowIndex, colIndex);
         });
       }
     }
     return board;
   };
-  const clickHandler = (x, y) => {
-    //playturn()
+  const cellClickHandler = (x, y) => {
     game.playTurn(x, y);
     displayT();
   };
@@ -172,9 +172,9 @@ function screenController() {
     return score;
   }
 
+  function resetRound() {
+    game.resetGame();
+  }
+
   return { game, displayT, displayWins };
 }
-
-let gameboard;
-gameboard = gameboardFactory();
-gameboard.reset();
