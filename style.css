@@ -12,18 +12,18 @@ body {
 .container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10rem;
-    height: 50vh;
-    width: 100%
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
 }
 
 .boardContainer {
     display: grid;
     grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
     gap: 0.2rem;
-    height: 30rem;
-    width: 30rem;
+    max-width: min(70vw, 70vh);
+    aspect-ratio: 1 / 1;
+    flex: 1;
     background-color: black;
 }
 
@@ -85,4 +85,16 @@ body {
 }
 .gameAnnouncement>button{
     font-size: 1rem;
+}
+
+@media only screen and (max-width : 780px) {
+    .container{
+        flex-direction: column;
+    }
+    .playerContainer{
+        border: none;
+        max-width: 100%;
+        width:100%;
+        flex-direction: row;
+    }
 }
