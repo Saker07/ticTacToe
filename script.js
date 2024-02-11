@@ -141,9 +141,9 @@ function gameController() {
 function screenController() {
   //to add handler to input player signs, and function to show game wins, and function to show round/match end and result, also match reset.
   let game = gameController();
+  let boardContainer = document.querySelector(".boardContainer");
 
   const displayT = () => {
-    let boardContainer = document.querySelector(".boardContainer");
     let board = game.getGameState().board;
     boardContainer.innerHTML = "";
     for (let rowIndex = 0; rowIndex < board.length; rowIndex++) {
@@ -172,9 +172,30 @@ function screenController() {
     return score;
   }
 
-  function resetRound() {
-    game.resetGame();
+  function resetRound(winner) {
+    let announcementDiv = document.createElement("div");
+    announcementDiv.classList.add("gameAnnouncement");
+    let announcementText = document.createElement("p");
+    announcementText.textContent = `${winner} won!`;
+    announcementDiv.appendChild(announcementText);
+    boardContainer.innerHTML = "";
+    boardContainer.appendChild(announcementDiv);
+    setTimeout(() => {
+      game.resetGame();
+      displayT();
+    }, 2000);
+  }
+  function resetMatch() {
+    game = gameController();
+    displayWins();
+    displayT();
   }
 
-  return { game, displayT, displayWins };
+  return {
+    game,
+    displayT,
+    displayWins,
+    resetRound,
+    resetMatch,
+  };
 }
