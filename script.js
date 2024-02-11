@@ -3,13 +3,11 @@ function playerFactory(choice) {
   let winDisplay;
   wins = 0;
   sign = choice;
-  //winDisplay = document.querySelector(`.${sign} .winCount`); ////---------------------------------------------------------------------------------screen controller
   const getSign = () => {
     return sign;
   };
   const addWin = () => {
     wins++;
-    //  winDisplay.textContent = wins;
     return wins;
   };
   const getWins = () => {
@@ -134,12 +132,15 @@ function gameController() {
     return currentPlayer;
   }
   const getGameState = () => {
-    return { board: gameboard.getBoard(), gameState: gameboard.checkGameState };
+    return {
+      board: gameboard.getBoard(),
+      gameState: gameboard.checkGameState(),
+    };
   };
   return { getCurrentPlayer, resetGame, playTurn, getScore, getGameState };
 }
 function screenController() {
-  //to add handler to input player signs, and function to show game wins, and function to show round/match end and result, also match reset.
+  //to add handler to input player signs
   let game = gameController();
   let boardContainer = document.querySelector(".boardContainer");
 
@@ -161,7 +162,13 @@ function screenController() {
   };
   const cellClickHandler = (x, y) => {
     game.playTurn(x, y);
-    displayT();
+    displayWins();
+    let gameState = game.getGameState().gameState;
+    if (gameState) {
+      resetRound(gameState);
+    } else {
+      displayT();
+    }
   };
 
   function displayWins() {
@@ -172,23 +179,47 @@ function screenController() {
     return score;
   }
 
-  function resetRound(winner) {
+  function showAnnouncement(message, buttonText, buttonHandler) {
     let announcementDiv = document.createElement("div");
     announcementDiv.classList.add("gameAnnouncement");
     let announcementText = document.createElement("p");
-    announcementText.textContent = `${winner} won!`;
+    announcementText.textContent = message;
     announcementDiv.appendChild(announcementText);
     boardContainer.innerHTML = "";
     boardContainer.appendChild(announcementDiv);
+    if (buttonText) {
+      let button = document.createElement("button");
+      button.textContent = buttonText;
+      announcementDiv.appendChild(button);
+      button.addEventListener("click", buttonHandler);
+    }
+  }
+
+  function resetRound(endState) {
+    const message =
+      endState == 1 ? `${game.getCurrentPlayer()} won the round!` : "Draw";
+    showAnnouncement(message);
+    if (game.getCurrentPlayer().getWins() == 5) {
+      resetMatch();
+      return 1;
+    }
     setTimeout(() => {
       game.resetGame();
       displayT();
+      displayWins();
     }, 2000);
   }
   function resetMatch() {
-    game = gameController();
-    displayWins();
-    displayT();
+    const createNewGame = () => {
+      game = gameController();
+      displayT();
+      displayWins();
+    };
+    showAnnouncement(
+      `${game.getCurrentPlayer()} won the match!`,
+      `New game`,
+      createNewGame
+    );
   }
 
   return {
