@@ -163,7 +163,16 @@ function screenController() {
     game.playTurn(x, y);
     displayT();
   };
-  return { game, displayT };
+
+  function displayWins() {
+    let playerWinsDivs = document.querySelectorAll(".winCount");
+    let score = game.getScore();
+    playerWinsDivs[0].textContent = score.playerOne;
+    playerWinsDivs[1].textContent = score.playerTwo;
+    return score;
+  }
+
+  return { game, displayT, displayWins };
 }
 
 let gameboard;
