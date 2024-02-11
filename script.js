@@ -1,8 +1,11 @@
-function playerFactory(choice) {
-  let wins, sign;
+function playerFactory(choice, playerName) {
   let winDisplay;
-  wins = 0;
-  sign = choice;
+  let wins = 0;
+  let sign = choice;
+  let name = playerName;
+  const getName = () => {
+    return name;
+  };
   const getSign = () => {
     return sign;
   };
@@ -13,7 +16,7 @@ function playerFactory(choice) {
   const getWins = () => {
     return wins;
   };
-  return { getSign, addWin, getWins };
+  return { getSign, addWin, getWins, getName };
 }
 
 function gameboardFactory() {
@@ -88,11 +91,11 @@ function gameboardFactory() {
 }
 function gameController() {
   let currentPlayer;
-  let playerOne = playerFactory("X");
-  let playerTwo = playerFactory("O");
+  let playerOne = playerFactory("X", "Player One");
+  let playerTwo = playerFactory("O", "Player Two");
   currentPlayer = switchPlayer();
   let gameboard = gameboardFactory();
-  resetGame("X", "O");
+  resetGame();
 
   function switchPlayer() {
     currentPlayer = currentPlayer == playerOne ? playerTwo : playerOne;
@@ -197,7 +200,9 @@ function screenController() {
 
   function resetRound(endState) {
     const message =
-      endState == 1 ? `${game.getCurrentPlayer()} won the round!` : "Draw";
+      endState == 1
+        ? `${game.getCurrentPlayer().getName()} won the round!`
+        : "Draw";
     showAnnouncement(message);
     if (game.getCurrentPlayer().getWins() == 5) {
       resetMatch();
@@ -216,7 +221,7 @@ function screenController() {
       displayWins();
     };
     showAnnouncement(
-      `${game.getCurrentPlayer()} won the match!`,
+      `${game.getCurrentPlayer().getName()} won the match!`,
       `New game`,
       createNewGame
     );
@@ -230,3 +235,5 @@ function screenController() {
     resetMatch,
   };
 }
+
+screenController().displayT();
